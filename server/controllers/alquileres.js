@@ -1,0 +1,74 @@
+let db = require('../database/models');
+
+module.exports={
+    agregar:(req,res)=>{
+        db.Alquileres.create({
+            oficina:req.body.oficina,
+            cliente:req.body.cliente,
+            persona_reservo:req.body.usuario,
+            fecha_comienzo:req.body.comienzo,
+            fecha_fin:req.body.fin
+        })
+        .then(data=>{
+            res.send('exito')
+        })
+        .catch(error=>{
+            console.log(error)
+            res.send('Hubo un error al crear la reserva')
+        })
+    },
+    listar:(req,res)=>{
+        db.Alquileres.findAll({
+            limit:20
+        })
+        .then(data=>{
+            res.send(data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+    },
+    detalle:(req,res)=>{
+        db.Alquileres.findOne({where:{id:req.params.id}})
+        .then(data=>{
+            res.send(data)
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+    },
+    actualizar:(req,res)=>{
+        db.Alquileres.update({
+            oficina:req.body.oficina,
+            cliente:req.body.cliente,
+            persona_reservo:req.body.usuario,
+            fecha_comienzo:req.body.comienzo,
+            fecha_fin:req.body.fin
+        },{
+            where:{
+                id:req.params.id
+            }
+        })
+        .then(data=>{
+            res.send('exito')
+        })
+        .catch(error=>{
+            console.log(error);
+            res.send('Hubo un error al actualizar la reserva')
+        })
+    },
+    eliminar:(req,res)=>{
+        db.Alquileres.destroy({
+            where:{
+                id:req.params.id
+            }
+        })
+        .then(data=>{
+            res.send('exito')
+        })
+        .catch(error=>{
+            console.log(error);
+            res.send('Hubo un error al eliminar la reserva')
+        })
+    }
+}
